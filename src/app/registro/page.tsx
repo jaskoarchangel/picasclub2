@@ -1,5 +1,3 @@
-// src/app/register/page.tsx
-
 'use client';  // Esta diretiva informa que o componente é um componente do lado do cliente.
 
 import { useState } from 'react';
@@ -10,7 +8,7 @@ import { useRouter } from 'next/navigation';  // Agora isso funcionará corretam
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>(''); // Tipando o estado de erro como string
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -20,8 +18,12 @@ export default function Register() {
       // Criação do usuário com email e senha
       await createUserWithEmailAndPassword(auth, email, password);
       router.push('/login');  // Redireciona para a página de login após o registro
-    } catch (error: any) {
-      setError(error.message);  // Exibe o erro, caso ocorra
+    } catch (error: unknown) {  // Usando 'unknown' para o erro
+      if (error instanceof Error) {
+        setError(error.message);  // Exibe o erro, caso ocorra
+      } else {
+        setError('Ocorreu um erro desconhecido.');  // Em caso de erro não esperado
+      }
     }
   };
 

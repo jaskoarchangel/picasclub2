@@ -3,15 +3,31 @@
 import { useEffect, useState } from 'react';
 import { getCifras } from '../lib/db';  // Importa a função para pegar as cifras do Firestore
 
+// Definir o tipo da cifra, com id podendo ser string
+type Cifra = {
+  id: string;  // Alterado para garantir que 'id' sempre seja uma string
+  titulo: string;
+  autor: string;
+  texto: string;
+};
+
 export default function Home() {
-  const [cifras, setCifras] = useState<any[]>([]); // Estado para armazenar as cifras
+  const [cifras, setCifras] = useState<Cifra[]>([]); // Estado tipado com o tipo Cifra
   const [loading, setLoading] = useState(true);   // Estado para controlar o carregamento
 
   useEffect(() => {
     // Função para carregar as cifras quando o componente é montado
     const loadCifras = async () => {
       const data = await getCifras();
-      setCifras(data);
+      if (Array.isArray(data)) {
+        const cifrasComIdValidado = data.map((cifra) => ({
+          ...cifra,
+          id: cifra.id || '', // Garante que o id sempre será uma string, caso contrário atribui uma string vazia
+        }));
+        setCifras(cifrasComIdValidado);
+      } else {
+        console.error("Erro: Dados não são um array de cifras.");
+      }
       setLoading(false); // Define que o carregamento terminou
     };
 
