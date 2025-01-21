@@ -5,10 +5,10 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/firebase';  // Certifique-se de que o caminho está correto
 import { useRouter } from 'next/navigation';  // Agora isso funcionará corretamente no cliente
 
+
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string>(''); // Tipando o estado de erro como string
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -20,9 +20,9 @@ export default function Register() {
       router.push('/login');  // Redireciona para a página de login após o registro
     } catch (error: unknown) {  // Usando 'unknown' para o erro
       if (error instanceof Error) {
-        setError(error.message);  // Exibe o erro, caso ocorra
+        alert(error.message);  // Exibe o erro em um alerta, caso ocorra
       } else {
-        setError('Ocorreu um erro desconhecido.');  // Em caso de erro não esperado
+        alert('Ocorreu um erro desconhecido.');  // Em caso de erro não esperado
       }
     }
   };
@@ -51,7 +51,6 @@ export default function Register() {
         </div>
         <button type="submit">Registrar</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 }
