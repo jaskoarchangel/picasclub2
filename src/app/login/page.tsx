@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState('');  // Renomeado para 'erro' para manter o idioma consistente
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -18,14 +18,14 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, senha);
       router.push('/'); // Redireciona para a página inicial após o login
     } catch (error) {
-      setErro('Erro ao fazer login. Verifique seu e-mail e senha.');
+      setErro('Erro ao fazer login. Verifique seu e-mail e senha.');  // Exibe a mensagem de erro
     }
   };
 
   return (
     <div>
       <h2>Login</h2>
-      {erro && <p>{erro}</p>}
+      {erro && <p style={{ color: 'red' }}>{erro}</p>}  {/* Exibe a mensagem de erro caso haja */}
       <form onSubmit={handleLogin}>
         <input
           type="email"
