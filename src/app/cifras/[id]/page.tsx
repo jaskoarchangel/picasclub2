@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';  // Captura parâmetros 
 import { getCifraById, deleteCifra, saveCifra } from '@/lib/db'; // Caminho correto para importar do db
 import { Cifra } from '@/lib/db';  // Importando a interface Cifra
 import { auth } from '@/lib/firebase';  // Importando a instância de auth do Firebase
-import { onAuthStateChanged } from 'firebase/auth';  // Importando a função do Firebase para checar a autenticação
+import { onAuthStateChanged, User } from 'firebase/auth';  // Importando a função do Firebase para checar a autenticação
 
 // Regex para detectar acordes
 const acordeRegex = /\b[A-G](#|b)?(7M|m|maj|min|dim|aug|sus)?\d*(\/[A-G](#|b)?)?\b/g;
@@ -16,7 +16,7 @@ export default function CifraPage() {
 
   const [cifra, setCifra] = useState<Cifra | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<any>(null);  // Armazena o usuário autenticado
+  const [user, setUser] = useState<User | null>(null);  // Armazena o usuário autenticado
   const [isEditing, setIsEditing] = useState(false);  // Controla o estado de edição
   const [editedTitulo, setEditedTitulo] = useState('');  // Estado para o título editado
   const [editedTexto, setEditedTexto] = useState('');  // Estado para o texto editado
