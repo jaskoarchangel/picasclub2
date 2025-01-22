@@ -7,3 +7,12 @@ body {
   h1 {
     color: #f36100;
   }
+
+  .text-orange-500 {
+    color: orange;
+  }
+  
+  .font-bold {
+    font-weight: bold;
+  }
+  

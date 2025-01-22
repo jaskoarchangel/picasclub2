@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';  // Importa o Link do Next.js para navegação
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -39,6 +40,8 @@ export default function Login() {
         />
         <button type="submit">Entrar</button>
       </form>
+
+      <Link href="/registro" className="bg-blue-500 text-white p-2 rounded mr-2">registrar</Link>
     </div>
   );
 }
