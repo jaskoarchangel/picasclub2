@@ -40,7 +40,7 @@ export default function CifraPage() {
       <h1 className="text-2xl font-bold">{cifra.titulo}</h1>
       <p className="text-xl mt-2"><strong>enviado por</strong> {cifra.autor}</p>
       <div className="mt-4">
-        <h2 className="text-xl font-semibold">Cifra:</h2>
+
         {/* Renderiza o texto da cifra com acordes destacados */}
         <pre
           className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap"
