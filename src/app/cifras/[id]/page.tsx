@@ -7,12 +7,6 @@ import { Cifra } from '@/lib/db';  // Importando a interface Cifra
 import { auth } from '@/lib/firebase';  // Importando a instância de auth do Firebase
 import { onAuthStateChanged, User } from 'firebase/auth';  // Importando a função do Firebase para checar a autenticação
 
-// Definindo os padrões das notas, acidentais, acordes, suspensões e sustenido
-const notes = "[CDEFGAB]"; // Notas musicais básicas
-const accidentals = "(b|bb|#)?"; // Acidentais (bemol, duplo bemol e sustenido)
-const chords = "(m|maj7|maj|min7|min|sus|7|5)?"; // Tipos de acordes, incluindo acordes com número
-const suspends = "(1|2|3|4|5|6|7|8|9)?"; // Suspensões (números de acordes suspensos)
-const sharp = "(#)?"; // Sustenido
 
 // Criando a expressão regular para corresponder a padrões de acordes
 const acordeRegex = new RegExp(
