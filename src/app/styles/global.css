@@ -2,6 +2,10 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
     color: #5c4545;
+    font-size: 1.1rem;
+    font-family: Arial, sans-serif;
+    min-height: 290px;
+
   }
   
   h1 {
@@ -9,10 +13,25 @@ body {
   }
 
   .text-orange-500 {
-    color: orange;
+    color: #fd944e;
+  }
+
+  .text-orange-500:hover {
+    color: #fc771f;
   }
   
   .font-bold {
     font-weight: bold;
   }
   
+ 
+
+  a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: inherit; /* Herda a cor de texto do elemento pai */
+  }
+
+/* Aplica cor verde a qualquer texto com a classe display-name */
+.user-name {
+  color: green;
+}

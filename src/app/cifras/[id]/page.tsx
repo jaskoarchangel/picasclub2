@@ -7,8 +7,18 @@ import { Cifra } from '@/lib/db';  // Importando a interface Cifra
 import { auth } from '@/lib/firebase';  // Importando a instância de auth do Firebase
 import { onAuthStateChanged, User } from 'firebase/auth';  // Importando a função do Firebase para checar a autenticação
 
-// Regex para detectar acordes
-const acordeRegex = /\b[A-G](#|b)?(7M|m|maj|min|dim|aug|sus)?\d*(\/[A-G](#|b)?)?\b/g;
+// Definindo os padrões das notas, acidentais, acordes, suspensões e sustenido
+const notes = "[CDEFGAB]"; // Notas musicais básicas
+const accidentals = "(b|bb|#)?"; // Acidentais (bemol, duplo bemol e sustenido)
+const chords = "(m|maj7|maj|min7|min|sus|7|5)?"; // Tipos de acordes, incluindo acordes com número
+const suspends = "(1|2|3|4|5|6|7|8|9)?"; // Suspensões (números de acordes suspensos)
+const sharp = "(#)?"; // Sustenido
+
+// Criando a expressão regular para corresponder a padrões de acordes
+const acordeRegex = new RegExp(
+  "[A-G](b|#)?(maj|min|m|M|\\+|-|dim|aug|7)?[0-9]*(sus)?[0-9]*(\\/([A-G](b|#)?)?)?",
+  "g"
+);
 
 export default function CifraPage() {
   const { id } = useParams();  // Obtém o parâmetro 'id' da URL
@@ -95,12 +105,36 @@ export default function CifraPage() {
     }
   };
 
+  // Função de rolagem lenta
+  const slowScrollToBottom = () => {
+    const distance = document.documentElement.scrollHeight - window.scrollY; // Distância até o fundo
+    const step = distance / 40000; // Tamanho do "passo" de rolagem
+    let currentPosition = window.scrollY;
+
+    const scrollInterval = setInterval(() => {
+      currentPosition += step;
+      if (currentPosition >= document.documentElement.scrollHeight) {
+        clearInterval(scrollInterval); // Para quando chegar ao final
+      } else {
+        window.scrollTo(0, currentPosition); // Rola lentamente
+      }
+    }, 10); // Intervalo entre cada "passo" (quanto menor, mais lento)
+  };
+
   if (loading) return <p>Carregando...</p>;  // Exibe enquanto carrega
 
   if (!cifra) return <p>Cifra não encontrada.</p>;  // Caso não tenha encontrado a cifra
 
   return (
     <div className="p-4">
+      {/* Botão fixado no topo da página */}
+      <button
+        onClick={slowScrollToBottom}
+        className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+      >
+        Rolagem Suave para Baixo
+      </button>
+
       {/* Exibe o título como um campo de input se estiver no modo de edição */}
       {isEditing ? (
         <input
@@ -132,7 +166,7 @@ export default function CifraPage() {
       </div>
 
       {/* Exibe o botão de exclusão somente se o autor for o usuário autenticado */}
-      {user && cifra.autor === user.displayName && (
+      {user && cifra.autor === user.displayName  && (
         <div className="mt-4">
           {!isEditing ? (
             <button

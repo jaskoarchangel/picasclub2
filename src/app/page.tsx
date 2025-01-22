@@ -5,7 +5,7 @@ import { getCifras } from '../lib/db';  // Importa a função para pegar as cifr
 import Link from 'next/link';  // Importa o Link do Next.js para navegação
 import { auth } from '../lib/firebase';  // Importa a configuração do Firebase
 import { onAuthStateChanged, signOut } from 'firebase/auth';  // Importa para monitorar o estado de autenticação e fazer o logout
-import Head from 'next/head'; // Importa o Head do Next.js
+
 
 
 // Definir o tipo da cifra, com id podendo ser string
@@ -71,11 +71,7 @@ export default function Home() {
 
   return (
     <div>
-      <Head>
-        <title>PicasClub - Página Inicial</title>
-        <meta name="description" content="Explore as melhores cifras no PicasClub." />
-        <link rel="icon" href="https://akamai.sscdn.co/cc/img/favicon.ico" />
-      </Head>
+
 
       <h1>PicasClub</h1>
       {userName ? (
@@ -106,9 +102,11 @@ export default function Home() {
           {cifras.length > 0 ? (
             cifras.map((cifra) => (
               <div key={cifra.id} className="mb-5">
-                <Link href={`/cifras/${cifra.id}`} className="bg-blue-500 text-white p-2 rounded">
-                  <h2 className="text-xl font-bold">{cifra.titulo}</h2> {/* Exibe o título da cifra */}
-                </Link>
+    <Link href={`/cifras/${cifra.id}`} className="text-white p-2 rounded no-underline">
+      <h2 className="text-orange-500 text-xl font-bold hover:underline">
+        {cifra.titulo}
+      </h2>
+    </Link>
               </div>
             ))
           ) : (
