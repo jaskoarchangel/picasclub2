@@ -1,12 +1,12 @@
 import { db } from './firebase';  // Importa a configuração do Firebase
-import { collection, addDoc, getDocs, doc, getDoc, deleteDoc, FirestoreDataConverter, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, getDoc, deleteDoc, updateDoc, FirestoreDataConverter, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 // src/lib/db.ts
 export interface Cifra {  // Adicione o 'export' aqui
-    id?: string;
-    titulo: string;
-    autor: string;
-    texto: string;
+  id?: string;
+  titulo: string;
+  autor: string;
+  texto: string;
 }
 
 // Converter documentos Firestore para objetos tipados
@@ -44,14 +44,26 @@ export const getCifras = async (): Promise<Cifra[]> => {
   }
 };
 
-// Função para salvar uma cifra no Firestore
-export const saveCifra = async (cifra: Omit<Cifra, 'id'>): Promise<boolean> => {
+// Função para salvar ou atualizar uma cifra no Firestore
+export const saveCifra = async (cifra: Cifra): Promise<boolean> => {
   try {
-    await addDoc(collection(db, 'cifras').withConverter(cifraConverter), cifra);
-    console.log('Cifra salva com sucesso!');
+    // Se o id estiver presente, é uma atualização
+    if (cifra.id) {
+      const docRef = doc(db, 'cifras', cifra.id).withConverter(cifraConverter);
+      await updateDoc(docRef, {
+        titulo: cifra.titulo,
+        autor: cifra.autor,
+        texto: cifra.texto,
+      });
+      console.log('Cifra atualizada com sucesso!');
+    } else {
+      // Caso contrário, cria uma nova cifra
+      await addDoc(collection(db, 'cifras').withConverter(cifraConverter), cifra);
+      console.log('Cifra salva com sucesso!');
+    }
     return true;
   } catch (error) {
-    console.error("Erro ao salvar cifra:", error);
+    console.error("Erro ao salvar ou atualizar cifra:", error);
     return false;
   }
 };
@@ -73,15 +85,15 @@ export const getCifraById = async (id: string): Promise<Cifra | null> => {
   }
 };
 
-// Função para deletar uma cifra pelo ID
+// Função para excluir uma cifra no Firestore
 export const deleteCifra = async (id: string): Promise<boolean> => {
   try {
-    const docRef = doc(db, 'cifras', id);  // Referência ao documento
+    const docRef = doc(db, 'cifras', id);  // Referência ao documento com base no ID
     await deleteDoc(docRef);  // Deleta o documento
-    console.log('Cifra deletada com sucesso!');
-    return true;
+    console.log('Cifra excluída com sucesso!');
+    return true;  // Retorna true se a exclusão for bem-sucedida
   } catch (error) {
-    console.error('Erro ao deletar cifra:', error);
-    return false;
+    console.error('Erro ao excluir a cifra:', error);
+    return false;  // Retorna false se ocorrer um erro
   }
 };

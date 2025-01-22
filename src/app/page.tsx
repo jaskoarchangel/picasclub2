@@ -5,6 +5,8 @@ import { getCifras } from '../lib/db';  // Importa a função para pegar as cifr
 import Link from 'next/link';  // Importa o Link do Next.js para navegação
 import { auth } from '../lib/firebase';  // Importa a configuração do Firebase
 import { onAuthStateChanged, signOut } from 'firebase/auth';  // Importa para monitorar o estado de autenticação e fazer o logout
+import Head from 'next/head'; // Importa o Head do Next.js
+
 
 // Definir o tipo da cifra, com id podendo ser string
 type Cifra = {
@@ -69,7 +71,13 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Cifras Musicais</h1>
+      <Head>
+        <title>PicasClub - Página Inicial</title>
+        <meta name="description" content="Explore as melhores cifras no PicasClub." />
+        <link rel="icon" href="https://akamai.sscdn.co/cc/img/favicon.ico" />
+      </Head>
+
+      <h1>PicasClub</h1>
       {userName ? (
         <div>
           <p>Bem-vindo, {userName}!</p>
@@ -82,10 +90,10 @@ export default function Home() {
         </div>
       )}
 
-            {/* Botão de Enviar Cifra */}
-            {userName && (
+      {/* Botão de Enviar Cifra */}
+      {userName && (
         <Link href="/enviar" className="bg-green-500 text-white p-2 rounded mt-4">
-          <button>enviar</button>
+          <button>Enviar</button>
         </Link>
       )}
 
@@ -98,8 +106,8 @@ export default function Home() {
           {cifras.length > 0 ? (
             cifras.map((cifra) => (
               <div key={cifra.id} className="mb-5">
-                                <Link href={`/cifras/${cifra.id}`} className="bg-blue-500 text-white p-2 rounded">
-                <h2 className="text-xl font-bold">{cifra.titulo}</h2> {/* Exibe o título da cifra */}
+                <Link href={`/cifras/${cifra.id}`} className="bg-blue-500 text-white p-2 rounded">
+                  <h2 className="text-xl font-bold">{cifra.titulo}</h2> {/* Exibe o título da cifra */}
                 </Link>
               </div>
             ))
@@ -108,8 +116,6 @@ export default function Home() {
           )}
         </div>
       )}
-
-
     </div>
   );
 }
