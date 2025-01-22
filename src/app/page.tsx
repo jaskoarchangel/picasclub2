@@ -28,7 +28,7 @@ export default function Home() {
       try {
         const data = await getCifras();
         if (Array.isArray(data)) {
-          const cifrasComIdValidado = data.map((cifra) => ({
+          const cifrasComIdValidado: Cifra[] = data.map((cifra) => ({
             ...cifra,
             id: cifra.id || '', // Garante que o id sempre será uma string, caso contrário atribui uma string vazia
           }));
