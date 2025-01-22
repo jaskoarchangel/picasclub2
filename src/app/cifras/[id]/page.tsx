@@ -122,11 +122,11 @@ export default function CifraPage() {
   return (
     <div className="p-4">
       {/* Botão fixado no topo da página */}
-      <button
+      <button 
         onClick={slowScrollToBottom}
-        className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
       >
-        Rolagem Suave para Baixo
+        Rolar
       </button>
 
       {/* Exibe o título como um campo de input se estiver no modo de edição */}

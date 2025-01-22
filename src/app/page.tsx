@@ -77,18 +77,18 @@ export default function Home() {
       {userName ? (
         <div>
           <p>Bem-vindo, {userName}!</p>
-          <button onClick={handleLogout} className="bg-red-500 text-white p-2 rounded">Logout</button>
+          <button onClick={handleLogout} className="bg-orange-800 hover:bg-orange-900 text-white p-2 rounded">Logout</button>
         </div>
       ) : (
         <div>
           <p>Você não está logado.</p>
-          <Link href="/login" className="bg-blue-500 text-white p-2 rounded mr-2">Login</Link>
+          <Link href="/login" className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">Login</Link>
         </div>
       )}
 
       {/* Botão de Enviar Cifra */}
       {userName && (
-        <Link href="/enviar" className="bg-green-500 text-white p-2 rounded mt-4">
+        <Link href="/enviar" className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mt-4">
           <button>Enviar</button>
         </Link>
       )}
