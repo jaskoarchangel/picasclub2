@@ -1,13 +1,14 @@
 import { db } from './firebase';  // Importa a configuração do Firebase
 import { collection, addDoc, getDocs, doc, getDoc, deleteDoc, updateDoc, FirestoreDataConverter, DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
-// src/lib/db.ts
-export interface Cifra {  // Adicione o 'export' aqui
-  id?: string;
-  titulo: string;
-  autor: string;
-  texto: string;
-}
+// lib/db.ts
+export interface Cifra {
+    id?: string;
+    titulo: string;
+    autor: string;
+    texto: string;
+    videoLink?: string | null; // Permite null ou undefined
+  }
 
 // Converter documentos Firestore para objetos tipados
 const cifraConverter: FirestoreDataConverter<Cifra> = {
@@ -46,28 +47,31 @@ export const getCifras = async (): Promise<Cifra[]> => {
 
 // Função para salvar ou atualizar uma cifra no Firestore
 export const saveCifra = async (cifra: Cifra): Promise<boolean> => {
-  try {
-    // Se o id estiver presente, é uma atualização
-    if (cifra.id) {
-      const docRef = doc(db, 'cifras', cifra.id).withConverter(cifraConverter);
-      await updateDoc(docRef, {
-        titulo: cifra.titulo,
-        autor: cifra.autor,
-        texto: cifra.texto,
-      });
-      console.log('Cifra atualizada com sucesso!');
-    } else {
-      // Caso contrário, cria uma nova cifra
-      await addDoc(collection(db, 'cifras').withConverter(cifraConverter), cifra);
-      console.log('Cifra salva com sucesso!');
+    try {
+      if (cifra.id) {
+        // Se o id estiver presente, é uma atualização
+        const docRef = doc(db, 'cifras', cifra.id).withConverter(cifraConverter);
+        await updateDoc(docRef, {
+          titulo: cifra.titulo,
+          autor: cifra.autor,
+          texto: cifra.texto,
+          videoLink: cifra.videoLink,  // Adiciona o link do vídeo à atualização
+        });
+        console.log('Cifra atualizada com sucesso!');
+      } else {
+        // Caso contrário, cria uma nova cifra
+        await addDoc(collection(db, 'cifras').withConverter(cifraConverter), {
+          ...cifra,
+          videoLink: cifra.videoLink,  // Garante que o videoLink seja salvo ao criar
+        });
+        console.log('Cifra salva com sucesso!');
+      }
+      return true;
+    } catch (error) {
+      console.error("Erro ao salvar ou atualizar cifra:", error);
+      return false;
     }
-    return true;
-  } catch (error) {
-    console.error("Erro ao salvar ou atualizar cifra:", error);
-    return false;
-  }
-};
-
+  };
 // Função para obter uma cifra específica pelo ID
 export const getCifraById = async (id: string): Promise<Cifra | null> => {
   try {

@@ -89,7 +89,7 @@ export default function Register() {
             required 
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">
           {loading ? 'Registrando...' : 'Registrar'}  {/* Exibe o texto de carregamento */}
         </button>
       </form>

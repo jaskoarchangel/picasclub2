@@ -38,10 +38,10 @@ export default function Login() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
-        <button type="submit">Entrar</button>
+        <button type="submit" className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">Entrar</button>
       </form>
 
-      <Link href="/registro" className="bg-blue-500 text-white p-2 rounded mr-2">registrar</Link>
+      <Link href="/registro" className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">registrar</Link>
     </div>
   );
 }

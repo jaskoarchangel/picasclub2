@@ -73,25 +73,42 @@ export default function Home() {
     <div>
 
 
-      <h1>PicasClub</h1>
-      {userName ? (
-        <div>
-          <p>Bem-vindo, {userName}!</p>
-          <button onClick={handleLogout} className="bg-orange-800 hover:bg-orange-900 text-white p-2 rounded">Logout</button>
-        </div>
-      ) : (
-        <div>
-          <p>Você não está logado.</p>
-          <Link href="/login" className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">Login</Link>
-        </div>
-      )}
+      <h1 className="font-montserrat text-orange-600 text-7xl font-bold">PicasClub</h1>
+      
 
-      {/* Botão de Enviar Cifra */}
-      {userName && (
-        <Link href="/enviar" className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mt-4">
-          <button>Enviar</button>
-        </Link>
-      )}
+      {userName ? (
+  <div>
+    <p className="font-montserrat font-bold text-black">Bem-vindo, {userName}!</p>
+
+    <div className="flex items-center mt-4">
+      {/* Botão Enviar */}
+      <Link
+        href="/enviar"
+        className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-4"
+      >
+        Enviar
+      </Link>
+
+      {/* Botão Logout */}
+      <button
+        onClick={handleLogout}
+        className="font-montserrat bg-orange-800 hover:bg-orange-900 text-white p-2 rounded"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+) : (
+  <div>       
+    <Link
+      href="/login"
+      className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-4 rounded mt-4"
+    >
+      Login
+    </Link>
+  </div>
+)}
+
 
       {loading && !error ? (
         <p>Carregando cifras...</p>
@@ -101,12 +118,12 @@ export default function Home() {
         <div>
           {cifras.length > 0 ? (
             cifras.map((cifra) => (
-              <div key={cifra.id} className="mb-5">
-    <Link href={`/cifras/${cifra.id}`} className="text-white p-2 rounded no-underline">
-      <h2 className="text-orange-500 text-xl font-bold hover:underline">
-        {cifra.titulo}
-      </h2>
-    </Link>
+              <div key={cifra.id} className="mb-0.8">
+<Link href={`/cifras/${cifra.id}`} className="block mb-1">
+  <h2 className="text-orange-500 text-xl font-bold">
+    {cifra.titulo}
+  </h2>
+</Link>
               </div>
             ))
           ) : (

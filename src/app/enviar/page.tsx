@@ -59,7 +59,7 @@ export default function EnviarCifra() {
 
   return (
     <div>
-      <h2>Enviar Cifra</h2>
+      <h2 >Enviar Cifra</h2>
       {error && <p className="text-red-500">{error}</p>}  
 
       <form onSubmit={handleSubmit}>
@@ -76,9 +76,9 @@ export default function EnviarCifra() {
           onChange={(e) => setTexto(e.target.value)}
           required
         />
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2" >
           {loading ? 'Enviando...' : 'Enviar'}
-        </button>
+        </button >
       </form>
     </div>
   );
