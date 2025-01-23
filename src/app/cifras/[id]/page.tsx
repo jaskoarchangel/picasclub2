@@ -1,6 +1,6 @@
 'use client'; // Indica que este é um componente do lado do cliente
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getCifraById, deleteCifra, saveCifra } from '@/lib/db';
 import { Cifra } from '@/lib/db';
@@ -23,7 +23,9 @@ export default function CifraPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitulo, setEditedTitulo] = useState('');
   const [editedTexto, setEditedTexto] = useState('');
-  //const [userName, setUserName] = useState<string | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollSpeed, setScrollSpeed] = useState(1); // Velocidade inicial do scroll
+  const scrollInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -69,21 +71,20 @@ export default function CifraPage() {
       alert('Erro ao excluir a cifra. Tente novamente mais tarde.');
     }
   };
+
   const handleSave = async () => {
     if (!editedTitulo || !editedTexto || !cifra?.id) return;
-  
-    // Cria uma cópia do objeto cifra sem o campo videoLink
+
     const updatedCifra = {
       ...cifra,
       titulo: editedTitulo,
       texto: editedTexto,
     };
-  
-    // Remover o campo "videoLink", caso exista
+
     delete updatedCifra.videoLink;
-  
+
     try {
-      const success = await saveCifra(updatedCifra); // Salvar sem "videoLink"
+      const success = await saveCifra(updatedCifra);
       if (success) {
         alert('Cifra atualizada com sucesso!');
         setIsEditing(false);
@@ -96,45 +97,49 @@ export default function CifraPage() {
       alert('Erro ao salvar as edições. Tente novamente.');
     }
   };
-  
 
-  const slowScrollToBottom = () => {
-    const distance = document.documentElement.scrollHeight - window.scrollY;
-    const step = distance / 40000;
-    let currentPosition = window.scrollY;
-
-    const scrollInterval = setInterval(() => {
-      currentPosition += step;
-      if (currentPosition >= document.documentElement.scrollHeight) {
-        clearInterval(scrollInterval);
-      } else {
-        window.scrollTo(0, currentPosition);
-      }
-    }, 10);
+  const toggleScroll = () => {
+    if (isScrolling) {
+      clearInterval(scrollInterval.current!);
+      scrollInterval.current = null;
+      setIsScrolling(false);
+    } else {
+      scrollInterval.current = setInterval(() => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight) {
+          clearInterval(scrollInterval.current!);
+          setIsScrolling(false);
+        } else {
+          window.scrollBy(0, scrollSpeed) ;
+        }
+      }, 60);
+      setIsScrolling(true);
+    }
   };
 
-  if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center">Carregando...</p>;
-
+  if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center"></p>;
 
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
-
-
-
   return (
-
-
-    
     <div className="container mx-auto px-2 md:px-28 py-4">
-
-
-
-      <button 
-        onClick={slowScrollToBottom}
-        className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
-      >
-        Rolar
-      </button>
+      <div className="fixed bottom-4 right-4 flex items-center space-x-4">
+        <button
+          onClick={toggleScroll}
+          className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+        >
+          {isScrolling ? 'Parar' : 'Rolar'}
+        </button>
+        <input
+          type="range"
+          min="1"
+          max="4"
+          step="0.4"
+          value={scrollSpeed}
+          onChange={(e) => setScrollSpeed(Number(e.target.value))}
+          className="w-32"
+        />
+      </div>
 
       {isEditing ? (
         <input
@@ -151,7 +156,34 @@ export default function CifraPage() {
         <span className="text-orange-600 font-bold ">{cifra.autor}</span>
       </p>
 
-      
+      <div className="mt-4">
+        {user && cifra.autor === user.displayName && (
+          <div className="mt-4 ">
+            {!isEditing ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+              >
+                Mexer
+              </button>
+            ) : (
+              <button
+                onClick={handleSave}
+                className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+              >
+                Enviar
+              </button>
+            )}
+
+            <button
+              onClick={handleDelete}
+              className="ml-2 bg-red-800 text-white px-4 py-2 rounded-md hover:bg-red-900"
+            >
+              Cortar fora
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="mt-4 ">
         {isEditing ? (
@@ -166,35 +198,6 @@ export default function CifraPage() {
             className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap "
             dangerouslySetInnerHTML={{ __html: highlightAcordes(cifra.texto) }}
           />
-        )}
-      </div>
-
-      <div className="mt-4">
-        {user && cifra.autor === user.displayName && (
-          <div className="mt-4 ">
-            {!isEditing ? (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              >
-                Editar Cifra
-              </button>
-            ) : (
-              <button
-                onClick={handleSave}
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              >
-                Salvar Alterações
-              </button>
-            )}
-
-            <button
-              onClick={handleDelete}
-              className="ml-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-            >
-              Excluir
-            </button>
-          </div>
         )}
       </div>
     </div>

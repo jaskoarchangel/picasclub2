@@ -66,6 +66,7 @@ export default function EnviarCifra() {
         <input
           type="text"
           placeholder="Título"
+          className="outline outline-1 outline-gray-400"
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
           required

@@ -90,11 +90,11 @@ export default function RootLayout({ children }: LayoutProps) {
               {/* Verifica se o usuário está logado */}
               {userName ? (
                 <button onClick={handleLogout} className="text-red-600 hover:text-red-800">
-                  Logout
+                  Sair
                 </button>
               ) : (
                 <Link href="/login" className="text-orange-600 hover:text-orange-800">
-                  Login
+                  Penetrar
                 </Link>
               )}
             </nav>
