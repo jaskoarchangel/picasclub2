@@ -71,14 +71,16 @@ export default function Home() {
       </div>
   
       {/* Banner abaixo do botão */}
-      <div className="container mx-auto px-2 md:px-28">
+      <div className="container mx-auto px-2 md:px-28 relative overflow-hidden">
+      <Link href={`cifras/0y7w8QTG9AUjJnaEdtFc`} className="block w-full text-center">
         <Image
           src="/images/banner.jpg"
           alt="Banner do PicasClub"
           width={1300}
           height={500}
-          className="object-contain rounded-lg"
+          className="object-contain transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg"
         />
+        </Link>
       </div>
   
       {/* Conteúdo principal */}

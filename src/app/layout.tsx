@@ -81,7 +81,7 @@ export default function RootLayout({ children }: LayoutProps) {
 
             {/* Navegação */}
             <nav className="text-sm text-black font-bold flex space-x-8 mt-2 md:mt-0 flex-wrap justify-center md:justify-start">
-              <Link href="/" className="hover:text-gray-800">
+              <Link href="/" className="hover:text-orange-800">
                 Home
               </Link>
               <Link href="/enviar" className="hover:text-orange-800">

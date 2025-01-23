@@ -69,19 +69,21 @@ export default function CifraPage() {
       alert('Erro ao excluir a cifra. Tente novamente mais tarde.');
     }
   };
-
   const handleSave = async () => {
     if (!editedTitulo || !editedTexto || !cifra?.id) return;
-
+  
+    // Cria uma cópia do objeto cifra sem o campo videoLink
     const updatedCifra = {
       ...cifra,
       titulo: editedTitulo,
       texto: editedTexto,
-      
     };
-
+  
+    // Remover o campo "videoLink", caso exista
+    delete updatedCifra.videoLink;
+  
     try {
-      const success = await saveCifra(updatedCifra);
+      const success = await saveCifra(updatedCifra); // Salvar sem "videoLink"
       if (success) {
         alert('Cifra atualizada com sucesso!');
         setIsEditing(false);
@@ -94,6 +96,7 @@ export default function CifraPage() {
       alert('Erro ao salvar as edições. Tente novamente.');
     }
   };
+  
 
   const slowScrollToBottom = () => {
     const distance = document.documentElement.scrollHeight - window.scrollY;
@@ -110,7 +113,8 @@ export default function CifraPage() {
     }, 10);
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center">Carregando...</p>;
+
 
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
