@@ -14,6 +14,7 @@ interface LayoutProps {
 
 export default function RootLayout({ children }: LayoutProps) {
   const [userName, setUserName] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -67,15 +68,18 @@ export default function RootLayout({ children }: LayoutProps) {
               <div className="relative flex items-center w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px]">
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Em que você quer tocar hoje?"
                   className="outline outline-1 outline-gray-400 p-2 w-full rounded-lg bg-white text-black pr-10 pl-4 hidden md:block"
                 />
-                <button
+                <Link
+                  href={`/resultados?search=${searchQuery}`}
                   className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black text-white px-4 py-2 rounded-lg transition-transform duration-300 hover:transform hover:scale-105 hidden md:block"
                   aria-label="Buscar"
                 >
                   <Search size={17} stroke="white" strokeWidth={3} />
-                </button>
+                </Link>
               </div>
             </div>
 
