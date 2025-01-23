@@ -7,8 +7,6 @@ import { Cifra } from '@/lib/db';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
-import { signOut } from 'firebase/auth';
-
 
 const acordeRegex = new RegExp(
   "[A-G](b|#)?(maj|min|m|M|\\+|-|dim|aug|7)?[0-9]*(sus)?[0-9]*(\\/([A-G](b|#)?)?)?",

@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getCifras } from '../lib/db';
 import Link from 'next/link';
-import { auth } from '../lib/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+
 import Image from 'next/image';
 
 // Definir o tipo da cifra, com id podendo ser string
