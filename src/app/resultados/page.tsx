@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+
 import { useSearchParams } from 'next/navigation'; // Para pegar os parâmetros de query string
 
 const Resultados = () => {
