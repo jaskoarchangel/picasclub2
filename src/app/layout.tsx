@@ -12,6 +12,12 @@ interface LayoutProps {
   children: ReactNode;
 }
 
+export const metadata = {
+  title: 'Picas Club',
+  description: 'Seu site de rolas e picas duras!',
+  keywords: ['rolas', 'picas', 'cifra', 'club'],
+};
+
 export default function RootLayout({ children }: LayoutProps) {
   const [userName, setUserName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
