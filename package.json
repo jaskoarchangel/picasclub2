@@ -13,7 +13,9 @@
     "firebase-admin": "^13.0.2",
     "next": "15.1.5",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-feather": "^2.0.10",
+    "react-player": "^2.16.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -6,7 +6,10 @@ import { getCifraById, deleteCifra, saveCifra } from '@/lib/db';
 import { Cifra } from '@/lib/db';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-
+import Link from 'next/link';
+import Image from 'next/image';
+import { Search } from 'react-feather';
+import { signOut } from 'firebase/auth';
 
 
 const acordeRegex = new RegExp(
@@ -24,6 +27,7 @@ export default function CifraPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitulo, setEditedTitulo] = useState('');
   const [editedTexto, setEditedTexto] = useState('');
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -77,6 +81,7 @@ export default function CifraPage() {
       ...cifra,
       titulo: editedTitulo,
       texto: editedTexto,
+      
     };
 
     try {
@@ -113,8 +118,24 @@ export default function CifraPage() {
 
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUserName(null);
+    } catch (error) {
+      console.error('Erro ao fazer logout', error);
+    }
+  };
+
+
   return (
-    <div className="p-4">
+
+
+    
+    <div className="container mx-auto px-2 md:px-28 py-4">
+
+
+
       <button 
         onClick={slowScrollToBottom}
         className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
@@ -127,7 +148,7 @@ export default function CifraPage() {
           type="text"
           value={editedTitulo}
           onChange={(e) => setEditedTitulo(e.target.value)}
-          className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded"
+          className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded "
         />
       ) : (
         <h1 className="font-montserrat text-black text-4xl font-bold">{cifra.titulo}</h1>
@@ -137,7 +158,9 @@ export default function CifraPage() {
         <span className="text-orange-600 font-bold ">{cifra.autor}</span>
       </p>
 
-      <div className="mt-4">
+      
+
+      <div className="mt-4 ">
         {isEditing ? (
           <textarea
             value={editedTexto}
@@ -147,7 +170,7 @@ export default function CifraPage() {
           />
         ) : (
           <pre
-            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap"
+            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap "
             dangerouslySetInnerHTML={{ __html: highlightAcordes(cifra.texto) }}
           />
         )}
@@ -155,7 +178,7 @@ export default function CifraPage() {
 
       <div className="mt-4">
         {user && cifra.autor === user.displayName && (
-          <div className="mt-4">
+          <div className="mt-4 ">
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}

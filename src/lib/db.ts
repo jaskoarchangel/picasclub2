@@ -7,7 +7,7 @@ export interface Cifra {
     titulo: string;
     autor: string;
     texto: string;
-    videoLink?: string | null; // Permite null ou undefined
+    videoLink?: string;
   }
 
 // Converter documentos Firestore para objetos tipados
