@@ -6,9 +6,7 @@ import { getCifraById, deleteCifra, saveCifra } from '@/lib/db';
 import { Cifra } from '@/lib/db';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Search } from 'react-feather';
+
 import { signOut } from 'firebase/auth';
 
 
@@ -27,7 +25,7 @@ export default function CifraPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitulo, setEditedTitulo] = useState('');
   const [editedTexto, setEditedTexto] = useState('');
-  const [userName, setUserName] = useState<string | null>(null);
+  //const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -118,14 +116,7 @@ export default function CifraPage() {
 
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUserName(null);
-    } catch (error) {
-      console.error('Erro ao fazer logout', error);
-    }
-  };
+
 
 
   return (

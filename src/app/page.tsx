@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { auth } from '../lib/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Image from 'next/image';
-import { Search } from 'react-feather';
 
 // Definir o tipo da cifra, com id podendo ser string
 type Cifra = {
@@ -20,7 +19,7 @@ export default function Home() {
   const [cifras, setCifras] = useState<Cifra[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
+
 
   useEffect(() => {
     const loadCifras = async () => {
@@ -45,25 +44,10 @@ export default function Home() {
 
     loadCifras();
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserName(user.displayName);
-      } else {
-        setUserName(null);
-      }
-    });
 
-    return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUserName(null);
-    } catch (error) {
-      console.error('Erro ao fazer logout', error);
-    }
-  };
+ 
 
 
 
