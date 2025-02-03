@@ -27,12 +27,12 @@ export default function Home() {
             ...cifra,
             id: cifra.id || '',
           }));
-  
+
           // Ordenar as cifras por título em ordem alfabética
-          const cifrasOrdenadas = cifrasComIdValidado.sort((a, b) => 
+          const cifrasOrdenadas = cifrasComIdValidado.sort((a, b) =>
             a.titulo.localeCompare(b.titulo)
           );
-  
+
           setCifras(cifrasOrdenadas);
         } else {
           throw new Error('Dados não são um array de cifras');
@@ -44,7 +44,7 @@ export default function Home() {
         setLoading(false);
       }
     };
-  
+
     loadCifras();
   }, []);
 
@@ -52,7 +52,7 @@ export default function Home() {
     <div>
       {/* Cabeçalho */}
       {/* ... Aqui você pode manter o código do cabeçalho se necessário ... */}
-  
+
       {/* Botão acima do banner */}
       <div className="container mx-auto px-2 md:px-28 py-4">
         <button
@@ -61,7 +61,7 @@ export default function Home() {
           Todos
         </button>
       </div>
-  
+
       {/* Banner abaixo do botão */}
       <div className="container mx-auto px-2 md:px-28 relative overflow-hidden">
         <Link href={`cifras/0y7w8QTG9AUjJnaEdtFc`} className="block w-full text-center">
@@ -74,7 +74,7 @@ export default function Home() {
           />
         </Link>
       </div>
-  
+
       {/* Conteúdo principal */}
       <main className="font-montserrat container mx-auto px-4 md:px-28 mt-6">
         {loading && !error ? (
