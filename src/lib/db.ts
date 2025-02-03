@@ -18,15 +18,15 @@ export interface Cifra {
   titulo: string;
   autor: string;
   texto: string;
-  videoLink?: string; // Campo opcional
+  videoUrl?: string; // Campo opcional
 }
 
 // Converter para mapear documentos do Firestore para objetos tipados
 const cifraConverter: FirestoreDataConverter<Cifra> = {
   toFirestore(cifra: Cifra): DocumentData {
-    const { titulo, autor, texto, videoLink } = cifra;
+    const { titulo, autor, texto, videoUrl } = cifra;
     const data: DocumentData = { titulo, autor, texto };
-    if (videoLink) data.videoLink = videoLink; // Adiciona apenas se existir
+    if (videoUrl) data.videoUrl = videoUrl; // Adiciona apenas se existir
     return data;
   },
   fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>): Cifra {
@@ -36,7 +36,7 @@ const cifraConverter: FirestoreDataConverter<Cifra> = {
       titulo: data.titulo,
       autor: data.autor,
       texto: data.texto,
-      videoLink: data.videoLink || undefined, // Converte para undefined, se não existir
+      videoUrl: data.videoUrl || undefined, // Converte para undefined, se não existir
     };
   },
 };
