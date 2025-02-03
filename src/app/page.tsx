@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { getCifras } from '../lib/db';
 import Link from 'next/link';
-
 import Image from 'next/image';
 
 // Definir o tipo da cifra, com id podendo ser string
@@ -19,7 +18,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
   useEffect(() => {
     const loadCifras = async () => {
       try {
@@ -29,7 +27,13 @@ export default function Home() {
             ...cifra,
             id: cifra.id || '',
           }));
-          setCifras(cifrasComIdValidado);
+
+          // Ordenar as cifras por título em ordem alfabética
+          const cifrasOrdenadas = cifrasComIdValidado.sort((a, b) => 
+            a.titulo.localeCompare(b.titulo)
+          );
+
+          setCifras(cifrasOrdenadas);
         } else {
           throw new Error('Dados não são um array de cifras');
         }
@@ -42,19 +46,7 @@ export default function Home() {
     };
 
     loadCifras();
-
-
   }, []);
-
- 
-
-
-
-
-
-
-
-  
 
   return (
     <div>
@@ -72,14 +64,14 @@ export default function Home() {
   
       {/* Banner abaixo do botão */}
       <div className="container mx-auto px-2 md:px-28 relative overflow-hidden">
-      <Link href={`cifras/0y7w8QTG9AUjJnaEdtFc`} className="block w-full text-center">
-        <Image
-          src="/images/banner.jpg"
-          alt="Banner do PicasClub"
-          width={1300}
-          height={500}
-          className="object-contain transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg"
-        />
+        <Link href={`cifras/0y7w8QTG9AUjJnaEdtFc`} className="block w-full text-center">
+          <Image
+            src="/images/banner.jpg"
+            alt="Banner do PicasClub"
+            width={1300}
+            height={500}
+            className="object-contain transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg"
+          />
         </Link>
       </div>
   
@@ -109,7 +101,4 @@ export default function Home() {
       </main>
     </div>
   );
-  
-  
-  
 }

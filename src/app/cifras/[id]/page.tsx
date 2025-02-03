@@ -1,12 +1,12 @@
-'use client'; // Indica que este é um componente do lado do cliente
+'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getCifraById, deleteCifra, saveCifra } from '@/lib/db';
 import { Cifra } from '@/lib/db';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-
+import DOMPurify from 'dompurify'; // Para sanitizar o HTML
 
 const acordeRegex = new RegExp(
   "[A-G](b|#)?(maj|min|m|M|\\+|-|dim|aug|7)?[0-9]*(sus)?[0-9]*(\\/([A-G](b|#)?)?)?",
@@ -19,45 +19,60 @@ export default function CifraPage() {
 
   const [cifra, setCifra] = useState<Cifra | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitulo, setEditedTitulo] = useState('');
   const [editedTexto, setEditedTexto] = useState('');
   const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollSpeed, setScrollSpeed] = useState(1); // Velocidade inicial do scroll
+  const [scrollSpeed, setScrollSpeed] = useState(1);
   const scrollInterval = useRef<NodeJS.Timeout | null>(null);
 
+  // Hook para autenticação
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
+  // Hook para carregar a cifra
   useEffect(() => {
-    if (id) {
-      const fetchCifra = async () => {
-        const result = await getCifraById(id as string);
-        setCifra(result);
-        setLoading(false);
+    if (!id) return;
 
+    const fetchCifra = async () => {
+      try {
+        const result = await getCifraById(id as string);
         if (result) {
+          setCifra(result);
           setEditedTitulo(result.titulo);
           setEditedTexto(result.texto);
+        } else {
+          setError('Cifra não encontrada.');
         }
-      };
+      } catch (err) {
+        setError('Erro ao carregar a cifra.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchCifra();
-    }
+    fetchCifra();
   }, [id]);
 
-  const highlightAcordes = (texto: string) => {
+  // Função para destacar acordes
+  const highlightAcordes = useCallback((texto: string) => {
     return texto.replace(acordeRegex, (match) => `<span class="text-orange-500 font-bold">${match}</span>`);
-  };
+  }, []);
 
+  // Sanitiza o HTML antes de renderizar
+  const sanitizedTexto = useMemo(() => {
+    return cifra ? DOMPurify.sanitize(highlightAcordes(cifra.texto)) : '';
+  }, [cifra, highlightAcordes]);
+
+  // Função para deletar a cifra
   const handleDelete = async () => {
-    if (!cifra || !cifra.id) return;
+    if (!cifra?.id) return;
 
     const confirmDelete = confirm('Tem certeza que deseja excluir esta cifra?');
     if (!confirmDelete) return;
@@ -72,6 +87,7 @@ export default function CifraPage() {
     }
   };
 
+  // Função para salvar a cifra
   const handleSave = async () => {
     if (!editedTitulo || !editedTexto || !cifra?.id) return;
 
@@ -80,8 +96,6 @@ export default function CifraPage() {
       titulo: editedTitulo,
       texto: editedTexto,
     };
-
-    delete updatedCifra.videoLink;
 
     try {
       const success = await saveCifra(updatedCifra);
@@ -98,7 +112,8 @@ export default function CifraPage() {
     }
   };
 
-  const toggleScroll = () => {
+  // Função para controlar o scroll automático
+  const toggleScroll = useCallback(() => {
     if (isScrolling) {
       clearInterval(scrollInterval.current!);
       scrollInterval.current = null;
@@ -110,15 +125,24 @@ export default function CifraPage() {
           clearInterval(scrollInterval.current!);
           setIsScrolling(false);
         } else {
-          window.scrollBy(0, scrollSpeed) ;
+          window.scrollBy(0, scrollSpeed);
         }
       }, 60);
       setIsScrolling(true);
     }
-  };
+  }, [isScrolling, scrollSpeed]);
 
-  if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center"></p>;
+  // Limpa o intervalo ao desmontar o componente
+  useEffect(() => {
+    return () => {
+      if (scrollInterval.current) {
+        clearInterval(scrollInterval.current);
+      }
+    };
+  }, []);
 
+  if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center">Carregando...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
   return (
@@ -146,46 +170,44 @@ export default function CifraPage() {
           type="text"
           value={editedTitulo}
           onChange={(e) => setEditedTitulo(e.target.value)}
-          className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded "
+          className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded"
         />
       ) : (
         <h1 className="font-montserrat text-black text-4xl font-bold">{cifra.titulo}</h1>
       )}
+
       <p className="font-montserrat text-xl mt-1">
         <strong>Enviado por </strong>
-        <span className="text-orange-600 font-bold ">{cifra.autor}</span>
+        <span className="text-orange-600 font-bold">{cifra.autor}</span>
       </p>
 
-      <div className="mt-4">
-        {user && cifra.autor === user.displayName && (
-          <div className="mt-4 ">
-            {!isEditing ? (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
-              >
-                Mexer
-              </button>
-            ) : (
-              <button
-                onClick={handleSave}
-                className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
-              >
-                Enviar
-              </button>
-            )}
-
+      {user && cifra.autor === user.displayName && (
+        <div className="mt-4">
+          {!isEditing ? (
             <button
-              onClick={handleDelete}
-              className="ml-2 bg-red-800 text-white px-4 py-2 rounded-md hover:bg-red-900"
+              onClick={() => setIsEditing(true)}
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
             >
-              Cortar fora
+              Mexer
             </button>
-          </div>
-        )}
-      </div>
+          ) : (
+            <button
+              onClick={handleSave}
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+            >
+              Enviar
+            </button>
+          )}
+          <button
+            onClick={handleDelete}
+            className="ml-2 bg-red-800 text-white px-4 py-2 rounded-md hover:bg-red-900"
+          >
+            Cortar fora
+          </button>
+        </div>
+      )}
 
-      <div className="mt-4 ">
+      <div className="mt-4">
         {isEditing ? (
           <textarea
             value={editedTexto}
@@ -195,8 +217,8 @@ export default function CifraPage() {
           />
         ) : (
           <pre
-            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap "
-            dangerouslySetInnerHTML={{ __html: highlightAcordes(cifra.texto) }}
+            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap"
+            dangerouslySetInnerHTML={{ __html: sanitizedTexto }}
           />
         )}
       </div>

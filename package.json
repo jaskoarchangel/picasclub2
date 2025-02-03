@@ -8,11 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-    
   },
   "dependencies": {
+    "dompurify": "^3.2.3",
     "firebase": "^11.2.0",
     "firebase-admin": "^13.0.2",
+    "jsdom": "^26.0.0",
     "next": "15.1.5",
     "next-sitemap": "^4.2.3",
     "react": "^19.0.0",
