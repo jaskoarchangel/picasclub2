@@ -37,9 +37,9 @@ export default function Home() {
         } else {
           throw new Error('Dados não são um array de cifras');
         }
-      } catch (err) {
+      } catch {
         setError('Erro ao carregar as cifras. Tente novamente mais tarde.');
-        console.error('Erro ao carregar as cifras:', err); // Usando a variável 'err'
+        console.error('Erro ao carregar as cifras');
       } finally {
         setLoading(false);
       }
