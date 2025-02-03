@@ -18,7 +18,7 @@ export interface Cifra {
   titulo: string;
   autor: string;
   texto: string;
-  videoUrl?: string; // Campo opcional
+  videoUrl?: string | null; // Permite string, undefined ou null
 }
 
 // Converter para mapear documentos do Firestore para objetos tipados

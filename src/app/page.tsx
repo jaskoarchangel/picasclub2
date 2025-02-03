@@ -9,9 +9,9 @@ import Image from 'next/image';
 type Cifra = {
   id: string;
   titulo: string;
-  texto: string;
   autor: string;
-  videoUrl?: string; // Adicione esta linha
+  texto: string;
+  videoUrl?: string | null; // Permite string, undefined ou null
 };
 
 export default function Home() {

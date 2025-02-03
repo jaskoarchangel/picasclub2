@@ -24,10 +24,10 @@ export default function CifraPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitulo, setEditedTitulo] = useState('');
   const [editedTexto, setEditedTexto] = useState('');
+  const [editedVideoUrl, setEditedVideoUrl] = useState<string | null>(null); // Novo estado para editar o videoUrl
   const [isScrolling, setIsScrolling] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState(1);
   const [showVideo, setShowVideo] = useState(false); // Estado para controlar a exibição do vídeo
-  const [videoUrl, setVideoUrl] = useState<string | null>(null); // Estado para armazenar a URL do vídeo
   const scrollInterval = useRef<NodeJS.Timeout | null>(null);
 
   // Hook para autenticação
@@ -49,7 +49,7 @@ export default function CifraPage() {
           setCifra(result);
           setEditedTitulo(result.titulo);
           setEditedTexto(result.texto);
-          setVideoUrl(result.videoUrl || null); // Carrega a URL do vídeo da database
+          setEditedVideoUrl(result.videoUrl || null); // Carrega a URL do vídeo da database
           console.log('Video URL:', result.videoUrl); // Verifique o valor de videoUrl
         } else {
           setError('Cifra não encontrada.');
@@ -99,6 +99,7 @@ export default function CifraPage() {
       ...cifra,
       titulo: editedTitulo,
       texto: editedTexto,
+      videoUrl: editedVideoUrl || null, // Inclui o videoUrl atualizado
     };
 
     try {
@@ -175,12 +176,29 @@ export default function CifraPage() {
       </div>
 
       {isEditing ? (
-        <input
-          type="text"
-          value={editedTitulo}
-          onChange={(e) => setEditedTitulo(e.target.value)}
-          className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded"
-        />
+        <div>
+          <input
+            type="text"
+            value={editedTitulo}
+            onChange={(e) => setEditedTitulo(e.target.value)}
+            className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded"
+            placeholder="Título da cifra"
+          />
+          <textarea
+            value={editedTexto}
+            onChange={(e) => setEditedTexto(e.target.value)}
+            className="bg-gray-100 p-4 mt-2 rounded w-full"
+            rows={10}
+            placeholder="Texto da cifra"
+          />
+          <input
+            type="text"
+            value={editedVideoUrl || ''}
+            onChange={(e) => setEditedVideoUrl(e.target.value)}
+            className="bg-gray-100 p-4 mt-2 rounded w-full"
+            placeholder="Link do vídeo do YouTube"
+          />
+        </div>
       ) : (
         <h1 className="font-montserrat text-black text-4xl font-bold">{cifra.titulo}</h1>
       )}
@@ -216,34 +234,35 @@ export default function CifraPage() {
         </div>
       )}
 
-      {/* Botão para exibir o vídeo */}
-      {videoUrl && videoUrl.trim() !== '' && !showVideo && (
-        <button
-          onClick={handleShowVideo}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4"
-        >
-          Ver Vídeo
-        </button>
-      )}
+{/* Se houver URL do vídeo e não estiver mostrando o vídeo, exibimos a thumbnail */}
+{cifra.videoUrl && cifra.videoUrl.trim() !== '' && !showVideo && (
+  <div className="mt-4 flex justify-start">
+    <img
+      className="w-1/3 h-[250px] rounded-lg shadow-lg cursor-pointer"
+      src={`https://img.youtube.com/vi/${cifra.videoUrl.split('v=')[1]}/hqdefault.jpg`}
+      alt="Thumbnail do vídeo"
+      onClick={handleShowVideo} // Chama a função para exibir o vídeo
+    />
+  </div>
+)}
 
       {/* Mensagem de depuração */}
-      {!videoUrl && (
+      {!cifra.videoUrl && (
         <p className="text-gray-500 mt-4">Nenhum vídeo disponível para esta cifra.</p>
       )}
 
       {/* Exibir o vídeo do YouTube */}
-      {showVideo && videoUrl && (
-        <div className="mt-4">
-          <iframe
-            width="100%"
-            height="315"
-            src={`https://www.youtube.com/embed/${videoUrl.split('v=')[1]}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
+      {showVideo && cifra.videoUrl && (
+        <div className="mt-4 flex justify-start">
+  <iframe
+    className="w-1/3 h-[250px] rounded-lg shadow-lg"
+    src={`https://www.youtube.com/embed/${cifra.videoUrl.split('v=')[1]}`}
+    title="YouTube video player"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</div>
       )}
 
       <div className="mt-4">
