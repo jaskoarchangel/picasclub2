@@ -27,24 +27,24 @@ export default function Home() {
             ...cifra,
             id: cifra.id || '',
           }));
-
+  
           // Ordenar as cifras por título em ordem alfabética
           const cifrasOrdenadas = cifrasComIdValidado.sort((a, b) => 
             a.titulo.localeCompare(b.titulo)
           );
-
+  
           setCifras(cifrasOrdenadas);
         } else {
           throw new Error('Dados não são um array de cifras');
         }
       } catch (err) {
         setError('Erro ao carregar as cifras. Tente novamente mais tarde.');
-        console.error(err);
+        console.error('Erro ao carregar as cifras:', err); // Usando a variável 'err'
       } finally {
         setLoading(false);
       }
     };
-
+  
     loadCifras();
   }, []);
 
