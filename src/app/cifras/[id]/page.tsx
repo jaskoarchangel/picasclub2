@@ -54,7 +54,7 @@ export default function CifraPage() {
         } else {
           setError('Cifra não encontrada.');
         }
-      } catch (err) {
+      } catch (error) {
         setError('Erro ao carregar a cifra.');
       } finally {
         setLoading(false);
