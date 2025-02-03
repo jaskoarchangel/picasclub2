@@ -13,6 +13,8 @@ const acordeRegex = new RegExp(
   "g"
 );
 
+
+
 export default function CifraPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -154,7 +156,8 @@ export default function CifraPage() {
   if (loading) return <p className="font-montserrat text-orange-700 text-4xl font-bold flex items-center justify-center">Carregando...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!cifra) return <p>Cifra não encontrada.</p>;
-
+  if (error) return <p className="text-red-500">{error}</p>;
+  
   return (
     <div className="container mx-auto px-2 md:px-28 py-4">
       <div className="fixed bottom-4 right-4 flex items-center space-x-4">
