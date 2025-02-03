@@ -50,6 +50,7 @@ export default function CifraPage() {
           setEditedTitulo(result.titulo);
           setEditedTexto(result.texto);
           setVideoUrl(result.videoUrl || null); // Carrega a URL do vídeo da database
+          console.log('Video URL:', result.videoUrl); // Verifique o valor de videoUrl
         } else {
           setError('Cifra não encontrada.');
         }
@@ -216,13 +217,18 @@ export default function CifraPage() {
       )}
 
       {/* Botão para exibir o vídeo */}
-      {videoUrl && !showVideo && (
+      {videoUrl && videoUrl.trim() !== '' && !showVideo && (
         <button
           onClick={handleShowVideo}
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4"
         >
           Ver Vídeo
         </button>
+      )}
+
+      {/* Mensagem de depuração */}
+      {!videoUrl && (
+        <p className="text-gray-500 mt-4">Nenhum vídeo disponível para esta cifra.</p>
       )}
 
       {/* Exibir o vídeo do YouTube */}
