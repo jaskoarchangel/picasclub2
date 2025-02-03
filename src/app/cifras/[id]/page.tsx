@@ -105,7 +105,7 @@ export default function CifraPage() {
     try {
       const success = await saveCifra(updatedCifra);
       if (success) {
-        alert('Cifra atualizada com sucesso!');
+        alert('Cifraa atualizada com sucesso!');
         setIsEditing(false);
         setCifra(updatedCifra);
       } else {
