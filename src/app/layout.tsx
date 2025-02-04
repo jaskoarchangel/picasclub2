@@ -12,7 +12,6 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-
 export default function RootLayout({ children }: LayoutProps) {
   const [userName, setUserName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -108,6 +107,18 @@ export default function RootLayout({ children }: LayoutProps) {
 
         {/* Renderiza o conteúdo das páginas */}
         <main>{children}</main>
+
+        {/* Rodapé */}
+        <footer className="bg-gray-900 text-white py-6 mt-8">
+          <div className="font-montserratcontainer mx-auto px-4 md:px-28 text-center">
+            <p className="text-sm">
+              &copy; {new Date().getFullYear()} PicasClub - Todos os direitos reservados.
+            </p>
+            <p className="font-montserrat text-xs mt-2 text-gray-400">
+              Desenvolvido com ❤️ por <a href="https://instagram.com/heitorjasko" target="_blank" rel="noopener noreferrer" className="underline">Jasko</a>
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );

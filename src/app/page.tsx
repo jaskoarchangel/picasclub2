@@ -11,6 +11,7 @@ type Cifra = {
   titulo: string;
   autor: string;
   texto: string;
+  videoUrl?: string | null; // Permite string, undefined ou null
 };
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
       try {
         const data = await getCifras();
         if (Array.isArray(data)) {
+          // Garantir que todas as cifras tenham um ID válido
           const cifrasComIdValidado: Cifra[] = data.map((cifra) => ({
             ...cifra,
             id: cifra.id || '',

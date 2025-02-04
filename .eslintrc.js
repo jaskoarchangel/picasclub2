@@ -5,6 +5,6 @@ module.exports = {
     "no-unused-vars": "off",
     "semi": "off",
     "quotes": "off",
-    // Desabilita todas as outras regras
+
   },
 };

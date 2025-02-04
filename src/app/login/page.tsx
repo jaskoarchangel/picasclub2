@@ -18,7 +18,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, senha);
       router.push('/'); // Redireciona para a página inicial após o login
     } catch (error) {
-      console.error("Erro ao fazer login", error);  // Registra o erro no console
+      console.error("Erro ao fazer loGgin", error);  // Registra o erro no console
     }
   };
 
