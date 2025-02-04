@@ -4,7 +4,7 @@ import './styles/global.css';
 import React, { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search } from 'react-feather'; // Importando o ícone de pesquisa
+import { Search, Moon, Sun } from 'react-feather'; // Importando ícones de lua e sol
 import { auth } from '../lib/firebase'; // Assumindo que você tem o arquivo de configuração do Firebase
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
@@ -15,7 +15,30 @@ interface LayoutProps {
 export default function RootLayout({ children }: LayoutProps) {
   const [userName, setUserName] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [darkMode, setDarkMode] = useState<boolean>(false); // Estado para controlar o modo escuro
 
+  // Verifica o localStorage ao carregar a página
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    setDarkMode(savedDarkMode);
+  }, []);
+
+  // Atualiza o localStorage e aplica o modo escuro ao body
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode.toString());
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  // Função para alternar o modo escuro
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  // Autenticação do usuário
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -38,7 +61,7 @@ export default function RootLayout({ children }: LayoutProps) {
   };
 
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" className={darkMode ? 'dark' : ''}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <title>Picas Club - seu site de rolas e picas duras</title>
@@ -48,13 +71,13 @@ export default function RootLayout({ children }: LayoutProps) {
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body className="bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
         {/* Cabeçalho */}
-        <header className="bg-white p-1.5 border-b border-gray-300 w-full">
+        <header className="bg-white dark:bg-gray-800 p-1.5 border-b border-gray-300 dark:border-gray-700 w-full">
           <div className="container mx-auto flex flex-wrap justify-between items-center px-4 md:px-28">
             {/* Logotipo */}
             <div className="flex items-center space-x-4 flex-grow">
-              <Link href="/" className="hover:text-gray-800">
+              <Link href="/" className="hover:text-gray-800 dark:hover:text-gray-200">
                 <Image
                   src="/images/logo.png"
                   alt="Logo do PicasClub"
@@ -71,11 +94,11 @@ export default function RootLayout({ children }: LayoutProps) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Em que você quer tocar hoje?"
-                  className="outline outline-1 outline-gray-400 p-2 w-full rounded-lg bg-white text-black pr-10 pl-4 hidden md:block"
+                  className="outline outline-1 outline-gray-400 dark:outline-gray-600 p-2 w-full rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white pr-10 pl-4 hidden md:block"
                 />
                 <Link
                   href={`/resultados?search=${searchQuery}`}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black text-white px-4 py-2 rounded-lg transition-transform duration-300 hover:transform hover:scale-105 hidden md:block"
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black dark:bg-black text-white px-4 py-2 rounded-lg transition-transform duration-300 hover:transform hover:scale-105 hidden md:block"
                   aria-label="Buscar"
                 >
                   <Search size={17} stroke="white" strokeWidth={3} />
@@ -84,17 +107,25 @@ export default function RootLayout({ children }: LayoutProps) {
             </div>
 
             {/* Navegação */}
-            <nav className="text-sm text-black font-bold flex space-x-8 mt-2 md:mt-0 flex-wrap justify-center md:justify-start">
-              <Link href="/" className="hover:text-orange-800">
+            <nav className="text-sm text-black dark:text-white font-bold flex space-x-8 mt-2 md:mt-0 flex-wrap justify-center md:justify-start">
+              <Link href="/" className="hover:text-orange-800 dark:hover:text-orange-400">
                 Home
               </Link>
-              <Link href="/enviar" className="hover:text-orange-800">
+              <Link href="/enviar" className="hover:text-orange-800 dark:hover:text-orange-400">
                 Enviar
               </Link>
+              {/* Botão de modo escuro */}
+              <button
+                onClick={toggleDarkMode}
+                className="hover:text-orange-800 dark:hover:text-orange-400"
+                aria-label="Alternar modo escuro"
+              >
+                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
               {/* Verifica se o usuário está logado */}
               {userName ? (
-                <button onClick={handleLogout} className="text-red-600 hover:text-red-800">
-                  Sair
+                <button onClick={handleLogout} className="text-orange-600 hover:text-red-800">
+                  Tirar
                 </button>
               ) : (
                 <Link href="/login" className="text-orange-600 hover:text-orange-800">
@@ -110,7 +141,7 @@ export default function RootLayout({ children }: LayoutProps) {
 
         {/* Rodapé */}
         <footer className="bg-gray-900 text-white py-6 mt-8">
-          <div className="font-montserratcontainer mx-auto px-4 md:px-28 text-center">
+          <div className="font-montserrat container mx-auto px-4 md:px-28 text-center">
             <p className="text-sm">
               &copy; {new Date().getFullYear()} PicasClub - Todos os direitos reservados.
             </p>

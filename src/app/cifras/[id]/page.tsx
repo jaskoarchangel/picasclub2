@@ -169,12 +169,12 @@ export default function CifraPage() {
   if (!cifra) return <p>Cifra não encontrada.</p>;
 
 
-return (
-    <div className="container mx-auto px-2 md:px-28 py-4">
+  return (
+    <div className="container mx-auto px-2 md:px-28 py-4 dark:bg-gray-900 dark:text-white">
       <div className="fixed bottom-4 right-4 flex items-center space-x-4">
         <button
           onClick={toggleScroll}
-          className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+          className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
         >
           {isScrolling ? 'Finalizar' : 'Rolar'}
         </button>
@@ -189,58 +189,57 @@ return (
         />
       </div>
   
-
-  
       {isEditing ? (
         <div>
           <input
             type="text"
             value={editedTitulo}
             onChange={(e) => setEditedTitulo(e.target.value)}
-            className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded"
+            className="text-2xl font-bold p-2 mb-4 w-full border border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             placeholder="Título da cifra"
           />
           <input
             type="text"
             value={editedVideoUrl || ''}
             onChange={(e) => setEditedVideoUrl(e.target.value)}
-            className="bg-gray-100 p-4 mt-2 rounded w-full"
+            className="bg-gray-100 p-4 mt-2 rounded w-full dark:bg-gray-700 dark:text-white"
             placeholder="Link do vídeo do YouTube"
           />
         </div>
       ) : (
-<div className="flex flex-col sm:flex-row items-start justify-between mt-4">
-  <div className="flex-1">
-  <h1 className="font-montserrat text-black text-4xl lg:text-5xl xl:text-6xl font-bold  sm:mt-24">
-      {cifra.titulo}
-    </h1>
-    <p className="font-montserrat text-lg sm:text-xl mt-1">
-      <strong>Enviado por </strong>
-      <span className="text-orange-600 font-bold text-2xl sm:text-3xl">{cifra.autor}</span>
-    </p>
-  </div>
+        <div className="flex flex-col sm:flex-row items-start justify-between mt-4">
+          <div className="flex-1">
+            <h1 className="font-montserrat text-black dark:text-white text-4xl lg:text-5xl xl:text-6xl font-bold sm:mt-24">
+              {cifra.titulo}
+            </h1>
+            <p className="font-montserrat text-lg sm:text-xl mt-1">
+              <strong>Enviado por </strong>
+              <span className="text-orange-600 dark:text-orange-500 font-bold text-2xl sm:text-3xl">
+                {cifra.autor}
+              </span>
+            </p>
+          </div>
   
           {cifra.videoUrl && cifra.videoUrl.trim() !== '' && (
-<div className="ml-4">
-  {!showVideo ? (
-    <img
-      className="w-full sm:w-[560px] max-w-full aspect-video rounded-lg shadow-lg cursor-pointer"
-      src={`https://img.youtube.com/vi/${cifra.videoUrl.split('v=')[1]}/hqdefault.jpg`}
-      alt="Thumbnail do vídeo"
-      onClick={handleShowVideo}
-    />
-  ) : (
-    <iframe
-      className="w-full sm:w-[560px] max-w-full aspect-video rounded-lg shadow-lg"
-      src={`https://www.youtube.com/embed/${cifra.videoUrl.split('v=')[1]}`}
-      title="YouTube video player"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    ></iframe>
-  )}
-</div>
-
+            <div className="ml-4">
+              {!showVideo ? (
+                <img
+                  className="w-full sm:w-[560px] max-w-full aspect-video rounded-lg shadow-lg cursor-pointer"
+                  src={`https://img.youtube.com/vi/${cifra.videoUrl.split('v=')[1]}/hqdefault.jpg`}
+                  alt="Thumbnail do vídeo"
+                  onClick={handleShowVideo}
+                />
+              ) : (
+                <iframe
+                  className="w-full sm:w-[560px] max-w-full aspect-video rounded-lg shadow-lg"
+                  src={`https://www.youtube.com/embed/${cifra.videoUrl.split('v=')[1]}`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              )}
+            </div>
           )}
         </div>
       )}
@@ -250,14 +249,14 @@ return (
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
             >
               Mexer
             </button>
           ) : (
             <button
               onClick={handleSave}
-              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
             >
               Jogar dentro
             </button>
@@ -272,7 +271,7 @@ return (
       )}
   
       {!cifra.videoUrl && (
-        <p className="text-gray-500 mt-4">Nenhum vídeo disponível para esta cifra.</p>
+        <p className="text-gray-500 mt-4 dark:text-gray-400">Nenhum vídeo disponível para esta cifra.</p>
       )}
   
       <div className="mt-4">
@@ -280,18 +279,19 @@ return (
           <textarea
             value={editedTexto}
             onChange={(e) => setEditedTexto(e.target.value)}
-            className="bg-gray-100 p-4 mt-2 rounded w-full"
+            className="bg-gray-100 p-4 mt-2 rounded w-full dark:bg-gray-700 dark:text-white"
             rows={10}
           />
         ) : (
           <pre
-            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap"
+            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap dark:bg-gray-700 dark:text-white"
             dangerouslySetInnerHTML={{ __html: sanitizedTexto }}
           />
         )}
       </div>
     </div>
   );
+  
 
   
 }
