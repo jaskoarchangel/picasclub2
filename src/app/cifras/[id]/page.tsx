@@ -74,7 +74,7 @@ export default function CifraPage() {
       .split('\n')
       .map((linha) => {
         if (linhaAcordeRegex.test(linha)) {
-          return linha.replace(acordeRegex, (match) => `<span class="text-orange-500 font-bold">${match}</span>`);
+          return linha.replace(acordeRegex, (match) => `<span class="text-orange-500 font-bold dark:text-ph">${match}</span>`);
         }
         return linha;
       })
@@ -185,11 +185,11 @@ export default function CifraPage() {
 
 
   return (
-    <div className="container mx-auto px-2 md:px-28 py-4 dark:bg-gray-900 dark:text-white">
+    <div className="container mx-auto px-2 md:px-28 py-4 dark:bg-black dark:text-white">
       <div className="fixed bottom-4 right-4 flex items-center space-x-4">
         <button
           onClick={toggleScroll}
-          className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
+          className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-ph dark:hover:bg-orange-600"
         >
           {isScrolling ? 'Finalizar' : 'Rolar'}
         </button>
@@ -198,9 +198,10 @@ export default function CifraPage() {
           min="1"
           max="4"
           step="0.4"
+          
           value={scrollSpeed}
           onChange={(e) => setScrollSpeed(Number(e.target.value))}
-          className="w-32"
+            className="w-32 h-2 bg-transparent rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-ph dark:focus:ring-yellow-500"
         />
       </div>
   
@@ -229,7 +230,7 @@ export default function CifraPage() {
             </h1>
             <p className="font-montserrat text-lg sm:text-xl mt-1">
               <strong>Enviado por </strong>
-              <span className="text-orange-600 dark:text-orange-500 font-bold text-2xl sm:text-3xl">
+              <span className="text-orange-600 dark:text-ph font-bold text-2xl sm:text-3xl">
                 {cifra.autor}
               </span>
             </p>
@@ -264,14 +265,14 @@ export default function CifraPage() {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-ph dark:hover:bg-orange-600"
             >
               Mexer
             </button>
           ) : (
             <button
               onClick={handleSave}
-              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-orange-700 dark:hover:bg-orange-600"
+              className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 dark:bg-ph dark:hover:bg-orange-600"
             >
               Jogar dentro
             </button>
@@ -299,7 +300,7 @@ export default function CifraPage() {
           />
         ) : (
           <pre
-            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap dark:bg-gray-700 dark:text-white"
+            className="bg-gray-100 p-4 mt-2 rounded whitespace-pre-wrap dark:bg-phggray dark:text-white"
             dangerouslySetInnerHTML={{ __html: sanitizedTexto }}
           />
         )}

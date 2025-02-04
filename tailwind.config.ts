@@ -15,6 +15,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'ph': '#ffa31a',
+        'phgray': '#0E0E0E',
+        'phggray': '#252525' 
       },
     },
   },

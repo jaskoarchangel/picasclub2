@@ -51,13 +51,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="dark:bg-gray-900 dark:text-white">
+    <div className="dark:bg-black dark:text-white">
       {/* Cabeçalho */}
       {/* ... Aqui você pode manter o código do cabeçalho se necessário ... */}
   
       {/* Botão acima do banner */}
       <div className="container mx-auto px-2 md:px-28 py-4">
-        <button className="bg-gray-900 text-white px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-orange-700 transition duration-300 dark:bg-gray-700 dark:hover:bg-orange-600">
+        <button className="bg-gray-900 text-white px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-orange-700 transition duration-300 dark:bg-gray-700 dark:hover:bg-ph">
           Todos
         </button>
       </div>
@@ -95,7 +95,7 @@ export default function Home() {
                 {cifras.map((cifra) => (
                   <div key={cifra.id} className="mb-2 flex justify-center">
                     <Link href={`/cifras/${cifra.id}`} className="block w-full text-center">
-                      <h2 className="text-left text-black dark:text-white text-xl font-bold hover:text-orange-600 dark:hover:text-orange-400">
+                      <h2 className="text-left text-black dark:text-white text-xl font-bold hover:text-orange-600 dark:hover:text-ph">
                         {cifra.titulo}
                       </h2>
                     </Link>

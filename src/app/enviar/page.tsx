@@ -59,10 +59,10 @@ export default function EnviarCifra() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-lg p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-orange-400 mb-8">
-          Enviar Cifra
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="w-full max-w-lg p-6 bg-white dark:bg-phgray rounded-lg shadow-lg">
+        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-ph mb-8">
+          Enfiar Pica
         </h2>
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
@@ -73,7 +73,7 @@ export default function EnviarCifra() {
             <input
               type="text"
               placeholder="Insira aqui"
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-1 focus:ring-ph"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
               required
@@ -84,7 +84,7 @@ export default function EnviarCifra() {
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Texto da Cifra</label>
             <textarea
               placeholder="Coloque os acordes em linhas paralelas às letras."
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[400px]"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-1 focus:ring-ph min-h-[400px]"
               value={texto}
               onChange={(e) => setTexto(e.target.value)}
               required
@@ -96,7 +96,7 @@ export default function EnviarCifra() {
             <input
               type="text"
               placeholder="Insira a URL do youtube"
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-1 focus:ring-ph"
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
             />
@@ -105,7 +105,7 @@ export default function EnviarCifra() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-ph hover:dark:bg-yellow-600"
           >
             {loading ? 'Enviando...' : 'Enviar'}
           </button>

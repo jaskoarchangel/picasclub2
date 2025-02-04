@@ -23,9 +23,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-sm p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-orange-400 mb-8">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="w-full max-w-sm p-6 bg-white dark:bg-phgray rounded-lg shadow-lg">
+        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-ph mb-8">Penetrar</h2>
         
         <form onSubmit={handleLogin} className="space-y-4">
           <input
@@ -33,18 +33,18 @@ export default function Login() {
             placeholder="Digite seu e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-2 focus:ring-ph"
           />
           <input
             type="password"
             placeholder="Digite sua senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-2 focus:ring-ph"
           />
           <button
             type="submit"
-            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-ph hover:dark:bg-yellow-600"
           >
             Entrar
           </button>
@@ -55,7 +55,7 @@ export default function Login() {
             href="/registro"
             className="text-sm text-orange-500 dark:text-orange-400 hover:underline"
           >
-            Não tem uma conta? Registrar
+            É sua primeira vez?
           </Link>
         </div>
       </div>

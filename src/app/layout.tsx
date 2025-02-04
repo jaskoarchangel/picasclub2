@@ -71,9 +71,9 @@ export default function RootLayout({ children }: LayoutProps) {
           rel="stylesheet"
         />
       </head>
-      <body className="bg-white dark:bg-gray-900 text-black dark:text-white transition-colors duration-300">
+      <body className="bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
         {/* Cabeçalho */}
-        <header className="bg-white dark:bg-gray-800 p-1.5 border-b border-gray-300 dark:border-gray-700 w-full">
+        <header className="bg-white dark:bg-phgray p-1.5 border-b border-gray-300 dark:border-phggray w-full">
           <div className="container mx-auto flex flex-wrap justify-between items-center px-4 md:px-28">
             {/* Logotipo */}
             <div className="flex items-center space-x-4 flex-grow">
@@ -86,7 +86,7 @@ export default function RootLayout({ children }: LayoutProps) {
                   className="rounded"
                 />
               </Link>
-
+  
               {/* Barra de pesquisa */}
               <div className="relative flex items-center w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px]">
                 <input
@@ -94,53 +94,53 @@ export default function RootLayout({ children }: LayoutProps) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Em que você quer tocar hoje?"
-                  className="outline outline-1 outline-gray-400 dark:outline-gray-600 p-2 w-full rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white pr-10 pl-4 hidden md:block"
+                  className="outline outline-1 outline-gray-400 dark:outline-phggray p-2 w-full rounded-lg bg-white dark:bg-phggray text-black dark:text-white pr-10 pl-4 hidden md:block"
                 />
                 <Link
                   href={`/resultados?search=${searchQuery}`}
                   className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-black dark:bg-black text-white px-4 py-2 rounded-lg transition-transform duration-300 hover:transform hover:scale-105 hidden md:block"
                   aria-label="Buscar"
                 >
-                  <Search size={17} stroke="white" strokeWidth={3} />
+                  <Search size={17} stroke="white" strokeWidth={3}  />
                 </Link>
               </div>
             </div>
-
+  
             {/* Navegação */}
             <nav className="text-sm text-black dark:text-white font-bold flex space-x-8 mt-2 md:mt-0 flex-wrap justify-center md:justify-start">
-              <Link href="/" className="hover:text-orange-800 dark:hover:text-orange-400">
+              <Link href="/" className="hover:text-orange-800 dark:hover:text-ph">
                 Home
               </Link>
-              <Link href="/enviar" className="hover:text-orange-800 dark:hover:text-orange-400">
+              <Link href="/enviar" className="hover:text-orange-800 dark:hover:text-ph">
                 Enviar
               </Link>
               {/* Botão de modo escuro */}
               <button
                 onClick={toggleDarkMode}
-                className="hover:text-orange-800 dark:hover:text-orange-400"
+                className="hover:text-orange-800 dark:hover:text-ph"
                 aria-label="Alternar modo escuro"
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
               {/* Verifica se o usuário está logado */}
               {userName ? (
-                <button onClick={handleLogout} className="text-orange-600 hover:text-red-800">
+                <button onClick={handleLogout} className="text-orange-600 hover:text-red-800 dark:text-ph hover:dark:text-yellow-500"  >
                   Tirar
                 </button>
               ) : (
-                <Link href="/login" className="text-orange-600 hover:text-orange-800">
+                <Link href="/login" className="text-orange-600 hover:text-orange-800  dark:text-ph hover:dark:text-yellow-500">
                   Penetrar
                 </Link>
               )}
             </nav>
           </div>
         </header>
-
+  
         {/* Renderiza o conteúdo das páginas */}
         <main>{children}</main>
-
+  
         {/* Rodapé */}
-        <footer className="bg-gray-600 dark:bg-black text-white py-6 mt-8">
+        <footer className="bg-gray-600 dark:bg-phggray text-white py-6 mt-8">
           <div className="font-montserrat container mx-auto px-4 md:px-28 text-center">
             <p className="text-sm">
               &copy; {new Date().getFullYear()} PicasClub - Todos os direitos reservados.
@@ -153,4 +153,5 @@ export default function RootLayout({ children }: LayoutProps) {
       </body>
     </html>
   );
+  
 }

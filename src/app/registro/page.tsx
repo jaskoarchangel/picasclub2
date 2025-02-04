@@ -54,10 +54,10 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-sm p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-orange-400 mb-8">
-          Cadastro
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="w-full max-w-sm p-6 bg-white dark:bg-phgray rounded-lg shadow-lg">
+        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-ph mb-8">
+          Primeira vez
         </h2>
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
@@ -70,7 +70,8 @@ export default function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="Digite seu nome de usuário"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-2 focus:ring-ph"
             />
           </div>
 
@@ -81,7 +82,8 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="Digite seu email"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-2 focus:ring-ph"
             />
           </div>
 
@@ -92,24 +94,25 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="Digite sua senha"
+              className="w-full p-3 bg-gray-100 dark:bg-phggray text-black dark:text-white rounded-lg border border-gray-300 dark:border-phggray focus:outline-none focus:ring-2 focus:ring-ph"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-ph hover:dark:bg-yellow-600"
           >
-            {loading ? 'Registrando...' : 'Registrar'}
+            {loading ? 'Perdendo...' : 'Perder'}
           </button>
         </form>
 
         <div className="mt-4 text-center">
           <p className="text-sm">
-            Já tem uma conta?{' '}
+            Já é experiente?{' '}
             <a href="/login" className="text-orange-500 hover:underline">
-              Faça login
+              Penetre!
             </a>
           </p>
         </div>
