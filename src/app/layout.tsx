@@ -140,7 +140,7 @@ export default function RootLayout({ children }: LayoutProps) {
         <main>{children}</main>
 
         {/* Rodapé */}
-        <footer className="bg-gray-900 text-white py-6 mt-8">
+        <footer className="bg-gray-600 dark:bg-black text-white py-6 mt-8">
           <div className="font-montserrat container mx-auto px-4 md:px-28 text-center">
             <p className="text-sm">
               &copy; {new Date().getFullYear()} PicasClub - Todos os direitos reservados.

@@ -130,7 +130,6 @@ export default function CifraPage() {
     }
   };
 
-  // Função para controlar o scroll automático
   const toggleScroll = useCallback(() => {
     if (isScrolling) {
       clearInterval(scrollInterval.current!);
@@ -145,10 +144,26 @@ export default function CifraPage() {
         } else {
           window.scrollBy(0, scrollSpeed);
         }
-      }, 120);
+      }, 120); // Isso aqui pode ser ajustado conforme a sua necessidade
       setIsScrolling(true);
     }
   }, [isScrolling, scrollSpeed]);
+  
+  useEffect(() => {
+    if (isScrolling) {
+      // Quando a velocidade mudar, resetamos o intervalo para refletir a nova velocidade
+      clearInterval(scrollInterval.current!);
+      scrollInterval.current = setInterval(() => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight) {
+          clearInterval(scrollInterval.current!);
+          setIsScrolling(false);
+        } else {
+          window.scrollBy(0, scrollSpeed);
+        }
+      }, 120); // Este valor pode ser ajustado conforme necessário
+    }
+  }, [scrollSpeed, isScrolling]);
 
   // Limpa o intervalo ao desmontar o componente
   useEffect(() => {

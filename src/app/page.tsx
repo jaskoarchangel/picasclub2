@@ -66,11 +66,18 @@ export default function Home() {
       <div className="container mx-auto px-2 md:px-28 relative overflow-hidden">
         <Link href={`cifras/0y7w8QTG9AUjJnaEdtFc`} className="block w-full text-center">
           <Image
-            src="/images/banner.jpg"
+            src="/images/banner-mobile.jpg" // Imagem para dispositivos móveis
             alt="Banner do PicasClub"
             width={1300}
             height={500}
-            className="object-contain transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg"
+            className="object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg md:hidden"
+          />
+          <Image
+            src="/images/banner-desktop.jpg" // Imagem para desktop
+            alt="Banner do PicasClub"
+            width={1300}
+            height={500}
+            className="object-cover w-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-105 hover:origin-center rounded-lg hidden md:block"
           />
         </Link>
       </div>
@@ -103,5 +110,6 @@ export default function Home() {
       </main>
     </div>
   );
+  
   
 }

@@ -1,22 +1,21 @@
-'use client';  // Esta diretiva informa que o componente é um componente do lado do cliente.
+'use client';
 
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';  // Importando updateProfile para definir o nome de usuário
-import { auth } from '../../lib/firebase';  // Certifique-se de que o caminho está correto
-import { useRouter } from 'next/navigation';  // Agora isso funcionará corretamente no cliente
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');  // Estado para o nome de usuário
-  const [loading, setLoading] = useState(false);  // Estado para controle do botão de carregamento
-  const [error, setError] = useState<string | null>(null);  // Estado para erros
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validação básica dos campos
     if (!username || username.length < 3) {
       setError('Nome de usuário deve ter pelo menos 3 caracteres');
       return;
@@ -32,67 +31,89 @@ export default function Register() {
       return;
     }
 
-    setError(null);  // Limpa qualquer erro anterior
-    setLoading(true);  // Desabilita o botão enquanto registra
+    setError(null);
+    setLoading(true);
 
     try {
-      // Criação do usuário com email e senha
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Atualiza o perfil do usuário com o nome de usuário
       await updateProfile(userCredential.user, {
-        displayName: username,  // Adiciona o nome de usuário ao perfil
+        displayName: username,
       });
 
-      router.push('/login');  // Redireciona para a página de login após o registro
+      router.push('/login');
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(error.message);  // Exibe o erro
+        setError(error.message);
       } else {
-        setError('Ocorreu um erro desconhecido.');  // Caso de erro inesperado
+        setError('Ocorreu um erro desconhecido.');
       }
     } finally {
-      setLoading(false);  // Reabilita o botão de envio
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Cadastro</h1>
-      <form onSubmit={handleRegister}>
-        {error && <div style={{ color: 'red' }}>{error}</div>}  {/* Exibe o erro caso exista */}
-        
-        <div>
-          <label>Nome de usuário</label>
-          <input 
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            required 
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-sm p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-montserrat text-center text-orange-500 dark:text-orange-400 mb-8">
+          Cadastro
+        </h2>
+
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div>
+            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Nome de usuário</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Senha</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          >
+            {loading ? 'Registrando...' : 'Registrar'}
+          </button>
+        </form>
+
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Já tem uma conta?{' '}
+            <a href="/login" className="text-orange-500 hover:underline">
+              Faça login
+            </a>
+          </p>
         </div>
-        <div>
-          <label>Email</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Senha</label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <button type="submit" disabled={loading} className="font-montserrat bg-orange-500 hover:bg-orange-600 text-white p-2 rounded mr-2">
-          {loading ? 'Registrando...' : 'Registrar'}  {/* Exibe o texto de carregamento */}
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
